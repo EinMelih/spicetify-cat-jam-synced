@@ -1,8 +1,7 @@
 import { SettingsSection } from "spcr-settings";
+
 const settings = new SettingsSection("Cat-Jam Settings", "catjam-settings");
 let audioData;
-
-new Spicetify.Menu.Item("Cat-Jam++", false, null, "heart-active").register();
 
 // Function to adjust the video playback rate based on the current track's BPM
 async function getPlaybackRate(audioData) {
@@ -150,17 +149,17 @@ async function createWebMVideo() {
     const targetElement = await waitForElement(targetElementSelector); // Wait until the target element is available
 
     // Remove any existing video element to avoid duplicates
-    const existingVideo = document.getElementById("catjam-webm");
-    if (existingVideo) {
-      existingVideo.remove();
-    }
+    // const existingVideo = document.getElementById("catjam-webm");
+    // if (existingVideo ) {
+    //   existingVideo.remove();
+    // }
 
     //
     let videoURL = String(settings.getFieldValue("catjam-webm-link"));
 
     if (!videoURL) {
       videoURL =
-        "Video URL Only webm files are supported. Please enter a valid webm video URL.";
+        "https://github.com/BlafKing/spicetify-cat-jam-synced/raw/main/src/resources/catjam.webm"; // Default video URL
     }
 
     // Create a new video element to be inserted
@@ -383,6 +382,24 @@ async function main() {
       console.error("[CAT-JAM] Video element not found.");
     }
   });
+
+  new Spicetify.Menu.Item(
+    "Cat-Jam++",
+    false,
+    settingsPage,
+    "heart-active"
+  ).register();
+  function settingsPage() {
+    let videoElement = document
+      .getElementById("catjam-webm")
+      .cloneNode(true) as Element;
+
+    Spicetify.PopupModal.display({
+      title: "Cat-Jam++",
+      content: videoElement,
+      isLarge: true,
+    });
+  }
 }
 
 export default main; // Export the main function for use in the application
