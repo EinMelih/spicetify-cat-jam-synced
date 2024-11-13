@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "build": "spicetify-creator",
-    "build-local": "spicetify-creator --out=dist --minify",
-    "watch": "spicetify-creator --watch"
+    "build-local": "spicetify-creator --out=dist/ --minify",
+    "watch": "spicetify-creator --watch",
+    "build-apply": "npm run build-local && cp /c/Projects/Spicefiy/spicetify-cat-jam-synced/dist/cat-jamPLUS.js /c/Users/Melih/AppData/Local/spicetify/Extensions && spicetify apply"
   },
   "license": "MIT",
   "devDependencies": {

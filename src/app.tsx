@@ -2,6 +2,8 @@ import { SettingsSection } from "spcr-settings";
 const settings = new SettingsSection("Cat-Jam Settings", "catjam-settings");
 let audioData;
 
+new Spicetify.Menu.Item("Cat-Jam++", false, null, "heart-active").register();
+
 // Function to adjust the video playback rate based on the current track's BPM
 async function getPlaybackRate(audioData) {
   let videoDefaultBPM = Number(settings.getFieldValue("catjam-webm-bpm"));
