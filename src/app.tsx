@@ -1,5 +1,6 @@
 import { SettingsSection } from "spcr-settings";
-
+const { React } = Spicetify;
+const { useEffect, useState } = React;
 const settings = new SettingsSection("Cat-Jam Settings", "catjam-settings");
 let audioData;
 
@@ -389,16 +390,72 @@ async function main() {
     settingsPage,
     "heart-active"
   ).register();
+
   function settingsPage() {
-    let videoElement = document
-      .getElementById("catjam-webm")
-      .cloneNode(true) as Element;
+    const videoElement = document.getElementById("catjam-webm").cloneNode(true);
+
+    const rootElement = document.createElement("div");
 
     Spicetify.PopupModal.display({
       title: "Cat-Jam++",
-      content: videoElement,
+      content: rootElement,
       isLarge: true,
     });
+
+    Spicetify.ReactDOM.render(<MyComponent />, rootElement);
+
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (
+          mutation.type === "childList" &&
+          !document.body.contains(rootElement)
+        ) {
+          Spicetify.ReactDOM.unmountComponentAtNode(rootElement);
+          observer.disconnect(); 
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  while (!Spicetify?.Player || !Spicetify?.ReactDOM) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+
+  console.log("[CAT-JAM] Extension loaded.");
+
+  // Erstelle ein neues div-Element als Container für die React-Komponente
+  const rootElement = document.createElement("div");
+  rootElement.id = "my-react-root";
+
+  // Optional: Füge dem Element Styles hinzu
+  rootElement.style.position = "fixed";
+  rootElement.style.top = "10px";
+  rootElement.style.right = "10px";
+  rootElement.style.zIndex = "1000";
+
+  // Füge das Element zum Body hinzu
+  document.body.appendChild(rootElement);
+
+  // Definiere deine React-Komponente
+  function MyComponent() {
+    const [data, setData] = useState("Hello, Spicetify!");
+
+    useEffect(() => {
+      console.log("MyComponent mounted!");
+    }, []);
+
+    return (
+      <div
+        style={{
+          backgroundColor: "blue",
+          padding: "10px",
+          borderRadius: "5px",
+        }}
+      >
+        <h1>{data}</h1>
+      </div>
+    );
   }
 }
 
