@@ -5,7 +5,8 @@
   "scripts": {
     "build": "spicetify-creator",
     "build-local": "spicetify-creator --out=dist --minify",
-    "watch": "spicetify-creator --watch"
+    "watch": "spicetify-creator --watch",
+    "build-apply": "npm run build-local && cp /c/Projects/Spicefiy/spicetify-cat-jam-synced/dist/fullScreen.js /c/Users/Melih/AppData/Local/spicetify/Extensions && spicetify watch -e"
   },
   "license": "MIT",
   "devDependencies": {
